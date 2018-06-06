@@ -5,28 +5,103 @@ namespace MovingWindow
 {
     public partial class Window : Form
     {
+        private const int offset = 6;
         private int abscissaX;
-        private Timer keyDown;
-        private Timer keyEnter;
-        private Timer keyLeft;
-        private Timer keyRight;
-        private Timer keyUp;
+        private int bottomBorder;
+        private Timer[] keys = new Timer[(int)Keyboard.activeKeys];
         private int ordinateY;
-        
+        private int rightBorder;
+
         public Window()
         {
+            bottomBorder = Screen.PrimaryScreen.Bounds.Height - Height;
+            rightBorder = Screen.PrimaryScreen.Bounds.Width - Width;
             InitializeComponent();
-            keyDown = new Timer(components);
-            keyEnter = new Timer(components);
-            keyLeft = new Timer(components);
-            keyRight = new Timer(components);
-            keyUp = new Timer(components);
-            keyDown.Tick += new EventHandler(KeyDown_Tick);
-            keyEnter.Tick += new EventHandler(KeyEnter_Tick);
-            keyLeft.Tick += new EventHandler(KeyLeft_Tick);
-            keyRight.Tick += new EventHandler(KeyRight_Tick);
-            keyUp.Tick += new EventHandler(KeyUp_Tick);
+            InitializeTimers();
+            Subscribe();
+        }
 
+        private void InitializeTimers()
+        {
+            for (int i = 0; i < keys.Length; i++)
+            {
+                keys[i] = new Timer(components);
+            }
+        }
+
+        private void KeyDownLogic(object sender, EventArgs e)
+        {
+            if (Location.Y < bottomBorder)
+            {
+                ordinateY += offset;
+                SetDesktopLocation(abscissaX, ordinateY);
+            }
+            if (Location.Y > bottomBorder)
+            {
+                StartTimer(keys[(int)Keyboard.up]);
+            }
+        }
+
+        private void KeyEnterLogic(object sender, EventArgs e)
+        {
+            CenterToScreen();
+        }
+
+        private void KeyLeftLogic(object sender, EventArgs e)
+        {
+            if (Location.X > 0)
+            {
+                abscissaX -= offset;
+                SetDesktopLocation(abscissaX, ordinateY);
+            }
+            if (Location.X < 0)
+            {
+                StartTimer(keys[(int)Keyboard.right]);
+            }
+        }
+
+        private void KeyRightLogic(object sender, EventArgs e)
+        {
+            if (Location.X < rightBorder)
+            {
+                abscissaX += offset;
+                SetDesktopLocation(abscissaX, ordinateY);
+            }
+            if (Location.X > rightBorder)
+            {
+                StartTimer(keys[(int)Keyboard.left]);
+            }
+        }
+
+        private void KeyUpLogic(object sender, EventArgs e)
+        {
+            if (Location.Y > 0)
+            {
+                ordinateY -= offset;
+                SetDesktopLocation(abscissaX, ordinateY);
+            }
+            if (Location.Y < 0)
+            {
+                StartTimer(keys[(int)Keyboard.down]);
+            }
+        }
+
+        private void StartTimer(Timer timer)
+        {
+            foreach (Timer key in keys)
+            {
+                key.Stop();
+            }
+            timer.Start();
+        }
+
+        private void Subscribe()
+        {
+            keys[(int)Keyboard.down].Tick += new EventHandler(KeyDownLogic);
+            keys[(int)Keyboard.enter].Tick += new EventHandler(KeyEnterLogic);
+            keys[(int)Keyboard.left].Tick += new EventHandler(KeyLeftLogic);
+            keys[(int)Keyboard.right].Tick += new EventHandler(KeyRightLogic);
+            keys[(int)Keyboard.up].Tick += new EventHandler(KeyUpLogic);
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -34,78 +109,23 @@ namespace MovingWindow
             ordinateY = Location.Y;
             abscissaX = Location.X;
             switch (e.KeyData)
-            { 
+            {
                 case Keys.Down:
-                    StartTimer(keyDown);
+                    StartTimer(keys[(int)Keyboard.down]);
                     break;
                 case Keys.Enter:
-                    StartTimer(keyEnter);
+                    StartTimer(keys[(int)Keyboard.enter]);
                     break;
                 case Keys.Left:
-                    StartTimer(keyLeft);
+                    StartTimer(keys[(int)Keyboard.left]);
                     break;
                 case Keys.Right:
-                    StartTimer(keyRight);
+                    StartTimer(keys[(int)Keyboard.right]);
                     break;
                 case Keys.Up:
-                    StartTimer(keyUp);
+                    StartTimer(keys[(int)Keyboard.up]);
                     break;
             }
-        }
-
-        private void KeyDown_Tick(object sender, EventArgs e)
-        {
-            ordinateY += 6;
-            SetDesktopLocation(abscissaX, ordinateY);
-            if (Location.Y > Screen.PrimaryScreen.Bounds.Height - Height)
-            {
-                StartTimer(keyUp);
-            }
-        }
-
-        private void KeyEnter_Tick(object sender, EventArgs e)
-        {
-            CenterToScreen();
-        }
-
-        private void KeyLeft_Tick(object sender, EventArgs e)
-        {
-            abscissaX -= 6;
-            SetDesktopLocation(abscissaX, ordinateY);
-            if (Location.X < 0)
-            {
-                StartTimer(keyRight);
-            }
-        }
-
-        private void KeyRight_Tick(object sender, EventArgs e)
-        {
-            abscissaX += 6;
-            SetDesktopLocation(abscissaX, ordinateY);
-            if (Location.X > Screen.PrimaryScreen.Bounds.Width - Width)
-            {
-                StartTimer(keyLeft);
-            }
-        }
-
-        private void KeyUp_Tick(object sender, EventArgs e)
-        {
-            ordinateY -= 6;
-            SetDesktopLocation(abscissaX, ordinateY);
-            if (Location.Y < 0)
-            {
-                StartTimer(keyDown);
-            }
-        }
-
-        private void StartTimer(Timer timer)
-        {
-            keyDown.Stop();
-            keyEnter.Stop();
-            keyLeft.Stop();
-            keyRight.Stop();
-            keyUp.Stop();
-            timer.Start();
         }
     }
 }
