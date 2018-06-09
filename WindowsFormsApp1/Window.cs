@@ -5,7 +5,7 @@ namespace MovingWindow
 {
     public partial class Window : Form
     {
-        private const int offset = 6;
+        private const int Offset = 6;
         private int abscissaX;
         private int bottomBorder;
         private Timer[] keys = new Timer[(int)Keyboard.activeKeys];
@@ -33,7 +33,7 @@ namespace MovingWindow
         {
             if (Location.Y < bottomBorder)
             {
-                ordinateY += offset;
+                ordinateY += Offset;
                 SetDesktopLocation(abscissaX, ordinateY);
             }
             if (Location.Y > bottomBorder)
@@ -51,7 +51,7 @@ namespace MovingWindow
         {
             if (Location.X > 0)
             {
-                abscissaX -= offset;
+                abscissaX -= Offset;
                 SetDesktopLocation(abscissaX, ordinateY);
             }
             if (Location.X < 0)
@@ -64,7 +64,7 @@ namespace MovingWindow
         {
             if (Location.X < rightBorder)
             {
-                abscissaX += offset;
+                abscissaX += Offset;
                 SetDesktopLocation(abscissaX, ordinateY);
             }
             if (Location.X > rightBorder)
@@ -77,7 +77,7 @@ namespace MovingWindow
         {
             if (Location.Y > 0)
             {
-                ordinateY -= offset;
+                ordinateY -= Offset;
                 SetDesktopLocation(abscissaX, ordinateY);
             }
             if (Location.Y < 0)

@@ -2,7 +2,7 @@
 {
     internal enum Keyboard
     {
-        down = 0,
+        Down = 0,
         enter = 1,
         left = 2,
         right = 3,
