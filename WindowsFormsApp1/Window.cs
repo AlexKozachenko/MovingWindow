@@ -8,7 +8,7 @@ namespace MovingWindow
         private const int Offset = 6;
         private int abscissaX;
         private int bottomBorder;
-        private Timer[] keys = new Timer[(int)Keyboard.activeKeys];
+        private Timer[] keys = new Timer[(int)Keyboard.ActiveKeys];
         private int ordinateY;
         private int rightBorder;
 
@@ -38,7 +38,7 @@ namespace MovingWindow
             }
             if (Location.Y > bottomBorder)
             {
-                StartTimer(keys[(int)Keyboard.up]);
+                StartTimer(keys[(int)Keyboard.Up]);
             }
         }
 
@@ -56,7 +56,7 @@ namespace MovingWindow
             }
             if (Location.X < 0)
             {
-                StartTimer(keys[(int)Keyboard.right]);
+                StartTimer(keys[(int)Keyboard.Right]);
             }
         }
 
@@ -69,7 +69,7 @@ namespace MovingWindow
             }
             if (Location.X > rightBorder)
             {
-                StartTimer(keys[(int)Keyboard.left]);
+                StartTimer(keys[(int)Keyboard.Left]);
             }
         }
 
@@ -82,7 +82,7 @@ namespace MovingWindow
             }
             if (Location.Y < 0)
             {
-                StartTimer(keys[(int)Keyboard.down]);
+                StartTimer(keys[(int)Keyboard.Down]);
             }
         }
 
@@ -97,11 +97,11 @@ namespace MovingWindow
 
         private void Subscribe()
         {
-            keys[(int)Keyboard.down].Tick += new EventHandler(KeyDownLogic);
-            keys[(int)Keyboard.enter].Tick += new EventHandler(KeyEnterLogic);
-            keys[(int)Keyboard.left].Tick += new EventHandler(KeyLeftLogic);
-            keys[(int)Keyboard.right].Tick += new EventHandler(KeyRightLogic);
-            keys[(int)Keyboard.up].Tick += new EventHandler(KeyUpLogic);
+            keys[(int)Keyboard.Down].Tick += new EventHandler(KeyDownLogic);
+            keys[(int)Keyboard.Enter].Tick += new EventHandler(KeyEnterLogic);
+            keys[(int)Keyboard.Left].Tick += new EventHandler(KeyLeftLogic);
+            keys[(int)Keyboard.Right].Tick += new EventHandler(KeyRightLogic);
+            keys[(int)Keyboard.Up].Tick += new EventHandler(KeyUpLogic);
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -111,19 +111,19 @@ namespace MovingWindow
             switch (e.KeyData)
             {
                 case Keys.Down:
-                    StartTimer(keys[(int)Keyboard.down]);
+                    StartTimer(keys[(int)Keyboard.Down]);
                     break;
                 case Keys.Enter:
-                    StartTimer(keys[(int)Keyboard.enter]);
+                    StartTimer(keys[(int)Keyboard.Enter]);
                     break;
                 case Keys.Left:
-                    StartTimer(keys[(int)Keyboard.left]);
+                    StartTimer(keys[(int)Keyboard.Left]);
                     break;
                 case Keys.Right:
-                    StartTimer(keys[(int)Keyboard.right]);
+                    StartTimer(keys[(int)Keyboard.Right]);
                     break;
                 case Keys.Up:
-                    StartTimer(keys[(int)Keyboard.up]);
+                    StartTimer(keys[(int)Keyboard.Up]);
                     break;
             }
         }
