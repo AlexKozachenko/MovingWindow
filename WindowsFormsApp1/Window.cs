@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Close#4
+using System;
 using System.Windows.Forms;
 
 namespace MovingWindow
